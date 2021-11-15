@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 
 # Global Variables 
 
-sr = 22050
+sr = 22050     # sample rate. based on Nyquist frequency, we only care about frequencies up to 10kHz therefor the sample rate will only perserve those frequencies 
 n_fft = 2048
 hop_length = 512
-
+duration = 30 # length of song to be used (in seconds) 
 
 # the 4 functions are based off the 4 modules mentioned in Librosa Paper
 
@@ -22,15 +22,14 @@ def transform(filename, sample_rate=22050):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 0.0,     # start reading audio after this time (in seconds)
-        duration = None, 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
         res_type = 'kaiser_best'
         )
 
-
-    D = librosa.stft(y)
-    S = np.abs(librosa.stft(y))
-    C = librosa.cqt(y, sr)
+    D = librosa.stft(y)         #Short-Time Fast Fourier Transform
+    S = np.abs(librosa.stft(y)) # Spectrogram 
+    C = librosa.cqt(y, sr)      # CQT 
 
     return y, sr, D, S, C 
 
@@ -54,6 +53,7 @@ def efx(y, sr):
     y_harmonic, y_percussive = librosa.effects.hpss(y)  
 
 
+
 def beats(y , sr):
     onset_envelope = librosa.onset.onset_strength(y, sr)
     onsets = librosa.onset.onset_detect(onset_envelope=onset_envelope)
@@ -71,9 +71,6 @@ def visuals():
 
     cqt_plot = librosa.display.specshow(chroma, x_axis='time', y_axis='chroma')
     return log_specshow, cqt_plot
-
-
-
 
     plt.subplot(2,1 ,1)
     plt.plot(onset_envelope, label = 'Onset strength')
