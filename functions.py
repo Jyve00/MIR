@@ -13,10 +13,10 @@ n_fft = 2048
 hop_length = 512
 duration = 5 # length of song to be used (in seconds) 
 
-# the 4 functions are based off the 4 modules mentioned in Librosa Paper
 
 
-# function to perform all required mathmatical transforms 
+
+###### returns Mel Spectrogram
 def get_mels(filename, sample_rate=22050):
     y, sr = librosa.load(
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
@@ -26,10 +26,16 @@ def get_mels(filename, sample_rate=22050):
         duration = duration, 
         res_type = 'kaiser_best'
         )
+    M = librosa.feature.melspectrogram(y)
+    M_db = librosa.power_to_db(M, ref=np.max)
 
-    
+    return M_db
 
-    return y, sr, 
+
+
+
+
+
 
 #D = librosa.stft(y)         #Short-Time Fast Fourier Transform
     #S = np.abs(librosa.stft(y)) # Spectrogram 
