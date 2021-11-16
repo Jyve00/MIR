@@ -12,12 +12,13 @@ sr = 22050     # sample rate. based on Nyquist frequency, we only care about fre
 n_fft = 2048
 hop_length = 512
 duration = 5 # length of song to be used (in seconds) 
+n_mels=128
 
 
 
 
 ###### returns Mel Spectrogram
-def get_mels(filename, sample_rate=22050):
+def get_mels(filename, sample_rate=sr):
     y, sr = librosa.load(
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
@@ -26,11 +27,41 @@ def get_mels(filename, sample_rate=22050):
         duration = duration, 
         res_type = 'kaiser_best'
         )
-    M = librosa.feature.melspectrogram(y)
+
+
+    M = librosa.feature.melspectrogram(y, n_fft=n_fft, hop_length=hop_length)
     M_db = librosa.power_to_db(M, ref=np.max)
 
     return M_db
 
+
+def get_mfcc(filename, sample_rate=sr):
+    y, sr = librosa.load(
+        path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
+        sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
+        mono = True,      # stereo isn't important. 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
+        res_type = 'kaiser_best'
+        )
+
+    mel_coef = librosa.feature.mfcc(y=y, sr=sr, n_mels=n_mels)
+    return mel_coef
+
+
+def get_cqt(filename, sample_rate=sr):
+    y, sr = librosa.load(
+        path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
+        sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
+        mono = True,      # stereo isn't important. 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
+        res_type = 'kaiser_best'
+        )    
+
+    C = librosa.cqt(y, sr=sr)
+    logC = librosa.amplitude_to_db(abs(C))
+    return logC
 
 
 
