@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 *.DS_store
 *.Data
+*.gitattributes
+
 
 # C extensions
 *.so
