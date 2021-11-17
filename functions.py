@@ -5,6 +5,7 @@ import numpy as np
 import scipy
 import librosa
 import matplotlib.pyplot as plt
+import sklearn
 
 # Global Variables 
 
@@ -14,7 +15,8 @@ hop_length = 512
 duration = 5 # length of song to be used (in seconds) 
 n_mels=128
 
-
+# Music Classification is usually done with 5 features:
+# Mel-Frequency Cepstral Coefficients, Spectral Centroid, Zero Crossing Rate, Chroma Frequencies, and Spectral Roll-off 
 
 
 ###### returns Mel Spectrogram
@@ -27,14 +29,11 @@ def get_mels(filename, sample_rate=sr):
         duration = duration, 
         res_type = 'kaiser_best'
         )
-
-
     M = librosa.feature.melspectrogram(y, n_fft=n_fft, hop_length=hop_length)
     M_db = librosa.power_to_db(M, ref=np.max)
 
     return M_db
-
-
+###### returns Mel-Frequency Cepstral Coefficient
 def get_mfcc(filename, sample_rate=sr):
     y, sr = librosa.load(
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
@@ -45,8 +44,93 @@ def get_mfcc(filename, sample_rate=sr):
         res_type = 'kaiser_best'
         )
 
-    mel_coef = librosa.feature.mfcc(y=y, sr=sr, n_mels=n_mels)
-    return mel_coef
+    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mels=n_mels)
+    return mfcc
+
+def scaled_mfcc(filename):
+
+    y, sr = librosa.load(
+        path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
+        sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
+        mono = True,      # stereo isn't important. 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
+        res_type = 'kaiser_best'
+        )
+    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mels=n_mels)
+    mfccs = sklearn.preprocessing.scale(mfccs, axis=1)
+    return mfccs
+    
+
+## Spectral Centroid
+## indicates "center of mass" which is calculated as the weighted mean of frequencies 
+
+def spectral_centroids(filename):
+
+    y, sr = librosa.load(
+        path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
+        sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
+        mono = True,      # stereo isn't important. 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
+        res_type = 'kaiser_best'
+        )
+    spectral_centroids = librosa.feature.spectral_centroid(x, sr=sr)
+    return spectral_centroids
+
+
+### zero-crossing rate is the rate at which the signal changes from positive to negative or back 
+def zero_crossing(filename):
+    y, sr = librosa.load(
+        path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
+        sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
+        mono = True,      # stereo isn't important. 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
+        res_type = 'kaiser_best'
+        )
+    zero_crossings = librosa.zero_crossings(y=y, pad=False)
+    return zer_crossings
+
+###Chroma features or a representation of the 12 pitch classes
+def chroma_features(filename):
+    y, sr = librosa.load(
+        path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
+        sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
+        mono = True,      # stereo isn't important. 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
+        res_type = 'kaiser_best'
+        )
+    chromagram = librosa.feature.chroma_stft(y=y, sr=sr, hop_length=hop_length)
+    return chromagram
+
+#### Spectral Rolloff is a messure of the shape of the signal for each frame in a signal/
+def spectral_rolloff(filename):
+    y, sr = librosa.load(
+        path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
+        sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
+        mono = True,      # stereo isn't important. 
+        offset = 60.0,     # start reading audio after this time (in seconds)
+        duration = duration, 
+        res_type = 'kaiser_best'
+        )
+    spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+    return spectral_rolloff
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def get_cqt(filename, sample_rate=sr):
@@ -64,14 +148,6 @@ def get_cqt(filename, sample_rate=sr):
     return logC
 
 
-
-
-
-
-#D = librosa.stft(y)         #Short-Time Fast Fourier Transform
-    #S = np.abs(librosa.stft(y)) # Spectrogram 
-    #C = librosa.cqt(y, sr)      # CQT 
-
 # features extraction 
 
 #def features(y, sr)
@@ -81,61 +157,3 @@ def get_cqt(filename, sample_rate=sr):
     #chroma = librosa.feature.chroma_cqt(y=y, sr=sr)
     #tonnetz = librosa.feature.tonnetz(y=y, sr=sr) # Computes the tonal centroid features 
     #delta = librosa.feature.delta()
-
-
-    #return M, MFCC, chroma, tonnetz, 
-
-
-#def efx(y, sr):
-   #y_harmonic, y_percussive = librosa.effects.hpss(y)  
-
-
-
-#def beats(y , sr):
-    #onset_envelope = librosa.onset.onset_strength(y, sr)
-    #onsets = librosa.onset.onset_detect(onset_envelope=onset_envelope)
-
-    #return onsets,  
-
-
-# visuals 
-#def visuals():
-    # display spectrogram
-    #log_power = librosa.logamplitude(C**2, ref_power = np.max, top_db=40)
-    #log_specshow = librosa.display.specshow(log_power, x_axis='time', y_axis='log')
-    #plt.colorbar()
-
-
-    #cqt_plot = librosa.display.specshow(chroma, x_axis='time', y_axis='chroma')
-    #return log_specshow, cqt_plot
-
-    #plt.subplot(2,1 ,1)
-    #plt.plot(onset_envelope, label = 'Onset strength')
-    #plt.vlines(onset, 0, onset_envelope.max(), color='r', alpha=0.25)
-    #plt.xticks([]), plt.yticks([])
-    #plt.legend(frameon=True)
-    #plt.axis('tight')
-
-
-
-    # spectral_centroid
-    # spectral_bandwidth
-    # spectral_rolloff 
-    # spectral_contrast 
-
-
-
-
-
-
-
-# MIR tools suggested in the Librosa Paper by its creator Brian Mcfee 
-# important features: beat detection, Tempo, chroma , 
-
-
-# separate harmonic and percussive waveforms. take percussive wave and run thru on_set_detection
-
-    
-
-
-#### make function to find musical key 
