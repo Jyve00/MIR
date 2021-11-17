@@ -9,10 +9,11 @@ import sklearn
 
 # Global Variables 
 
-sr = 22050     # sample rate. based on Nyquist frequency, we only care about frequencies up to 10kHz therefor the sample rate will only perserve those frequencies 
+sr = 22050 
+sample_rate = sr    # sample rate. based on Nyquist frequency, we only care about frequencies up to 10kHz therefor the sample rate will only perserve those frequencies 
 n_fft = 2048
 hop_length = 512
-duration = 5 # length of song to be used (in seconds) 
+duration = 29 # length of song to be used (in seconds) 
 n_mels=128
 
 # Music Classification is usually done with 5 features:
@@ -25,7 +26,7 @@ def get_mels(filename, sample_rate=sr):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 60.0,     # start reading audio after this time (in seconds)
+        offset = 0.0,     # start reading audio after this time (in seconds)
         duration = duration, 
         res_type = 'kaiser_best'
         )
@@ -39,7 +40,7 @@ def get_mfcc(filename, sample_rate=sr):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 60.0,     # start reading audio after this time (in seconds)
+        offset = 0.0,     # start reading audio after this time (in seconds)
         duration = duration, 
         res_type = 'kaiser_best'
         )
@@ -53,7 +54,7 @@ def scaled_mfcc(filename):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 60.0,     # start reading audio after this time (in seconds)
+        offset = 0.0,     # start reading audio after this time (in seconds)
         duration = duration, 
         res_type = 'kaiser_best'
         )
@@ -71,7 +72,7 @@ def spectral_centroids(filename):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 60.0,     # start reading audio after this time (in seconds)
+        offset = 0.0,     # start reading audio after this time (in seconds)
         duration = duration, 
         res_type = 'kaiser_best'
         )
@@ -85,7 +86,7 @@ def zero_crossing(filename):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 60.0,     # start reading audio after this time (in seconds)
+        offset = 0.0,     # start reading audio after this time (in seconds)
         duration = duration, 
         res_type = 'kaiser_best'
         )
@@ -98,7 +99,7 @@ def chroma_features(filename):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 60.0,     # start reading audio after this time (in seconds)
+        offset = 0.0,     # start reading audio after this time (in seconds)
         duration = duration, 
         res_type = 'kaiser_best'
         )
@@ -111,7 +112,7 @@ def spectral_rolloff(filename):
         path = filename,  # load in audio file. MP3 not supported refer to Librosa documentation 
         sr = sample_rate, # by convention the default sample rate is 22050, lower if not enough processing power 
         mono = True,      # stereo isn't important. 
-        offset = 60.0,     # start reading audio after this time (in seconds)
+        offset = 0.0,     # start reading audio after this time (in seconds)
         duration = duration, 
         res_type = 'kaiser_best'
         )
