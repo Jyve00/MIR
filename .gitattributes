@@ -3,3 +3,4 @@
 *.csv filter=lfs diff=lfs merge=lfs -text
 *Data
 *.psd filter=lfs diff=lfs merge=lfs -text
+*.json filter=lfs diff=lfs merge=lfs -text
