@@ -6,7 +6,7 @@ __pycache__/
 .Data
 .gitattributes
 .DS_Store
-
+.data.json
 
 # C extensions
 *.so
