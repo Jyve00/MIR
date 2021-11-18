@@ -2,10 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*.DS_store
-*.Data
+*.DS_Store
+.Data
 .gitattributes
-
+.DS_Store
+.data.json
+*.data.json
+*.json
 
 # C extensions
 *.so
