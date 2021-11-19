@@ -20,7 +20,8 @@ Text here
 ## Data Understanding
 The original dataset can be found at http://marsyas.info/downloads/datasets.html
 
-The Dataset consists of 1000 songs evenly divided up onto 10 music genres. The audio files are each 30 seconds long with a sample rate of 22050 Hz and bit depth of 16 bits. All the songs are in mono and in the .wav format. There was only one song that gave an encoding error and could not be import. The song in question was a Jazz song and it was removed from our dataset. 
+The Dataset consists of 1000 songs evenly divided up onto 10 music genres. The audio files are each 30 seconds long with a sample rate of 22050 Hz and bit dept of 16 bits. All the songs are in mono and in the .wav format. There was only one song that gave an encoding error and could not be import. The song in question was a Jazz song and it was removed from our dataset. The dataset also included 2 CSV's that provide some important information. One CSV file contains metadata on all 30 seconds of every song and the other is metadata from all songs but split up into 3 second segments. We mostly used the CSV's to connect the audio .wav filepaths with their correct labels. 
+
 
 
 
