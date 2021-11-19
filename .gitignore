@@ -9,6 +9,8 @@ __pycache__/
 .data.json
 *.data.json
 *.json
+*.git
+
 
 # C extensions
 *.so
