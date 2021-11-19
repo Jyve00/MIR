@@ -9,7 +9,7 @@ __pycache__/
 .data.json
 *.data.json
 *.json
-*.git
+.git
 
 
 # C extensions
