@@ -1,5 +1,7 @@
 # Music Genre Classification
 
+![alt text](https://www.incimages.com/uploaded_files/image/1920x1080/getty_626660256_2000108620009280158_388846.jpg)
+
 **Authors**: 
 
 - [Nicholas Indorf](https://github.com/Nindorph)
